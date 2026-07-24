@@ -45,6 +45,17 @@ jobs:
       - name: Build web
         run: pnpm turbo build --filter=web
 
+      - name: Check standalone
+        run: |
+          echo "===== standalone ====="
+          ls -la apps/web/.next/standalone
+
+          echo "===== standalone node_modules ====="
+          ls -la apps/web/.next/standalone/node_modules || true
+
+          echo "===== standalone package.json ====="
+          cat apps/web/.next/standalone/package.json
+
       - name: Prepare deployment package
         run: |
 
