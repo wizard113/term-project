@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      paths:
+    paths:
       - 'apps/web/**'
       - '.github/workflows/deploy-fe113.yml'
   workflow_dispatch:
