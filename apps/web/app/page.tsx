@@ -8,6 +8,7 @@ type Props = Omit<ImageProps, 'src'> & {
 };
 
 export default function Home() {
+  console.log(process.env.NEXT_PUBLIC_BLOB_URL)
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -18,6 +19,7 @@ export default function Home() {
           <li>
             NEXT_PUBLIC_BLOB_URL :
             {process.env.NEXT_PUBLIC_BLOB_URL ?? '(not set)'}
+            {console.}
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
