@@ -49,7 +49,7 @@ jobs:
           echo "require('./apps/web/server.js');" > deploy/server.js
 
       - name: Zip package
-        run: cd deploy && zip -qry ../release.zip .   # -y: 심링크 보존
+        run: cd deploy && zip -qr ../release.zip .
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
