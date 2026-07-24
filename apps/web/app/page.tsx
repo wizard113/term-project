@@ -8,7 +8,7 @@ type Props = Omit<ImageProps, 'src'> & {
 };
 
 export default function Home() {
-  console.log(process.env.NEXT_PUBLIC_BLOB_URL);
+  console.log(process.env.NEXT_PUBLIC_BLOB_URL ?? 'B----');
   return (
     <div className={styles.page}>
       <main className={styles.main}>
