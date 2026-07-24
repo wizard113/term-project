@@ -8,8 +8,7 @@ on:
       - 'apps/web/**'
       - 'packages/**'
       - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
+      - 'package-lock.json'
       - 'turbo.json'
       - '.github/workflows/deploy-fe113.yml'
   workflow_dispatch:
@@ -28,18 +27,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build web
-        run: pnpm turbo build --filter=web
+        run: npx turbo build --filter=web
 
       - name: Prepare deployment package
         run: |
@@ -60,7 +54,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Download artifact
+      - name: Download deployment artifact
         uses: actions/download-artifact@v4
         with:
           name: web-app
