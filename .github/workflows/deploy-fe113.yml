@@ -6,10 +6,6 @@ on:
       - main
     paths:
       - 'apps/web/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'turbo.json'
       - '.github/workflows/deploy-fe113.yml'
   workflow_dispatch:
 
