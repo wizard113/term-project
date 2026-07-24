@@ -29,8 +29,6 @@ jobs:
       # pnpm 을 먼저 설치해야 setup-node 의 pnpm 캐시가 동작함
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node
         uses: actions/setup-node@v4
