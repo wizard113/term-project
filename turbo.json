@@ -1,12 +1,13 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "envMode": "loose",
+
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
+      "env": ["API_URL", "BLOB_URL", "NEXT_PUBLIC_BLOB_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]
