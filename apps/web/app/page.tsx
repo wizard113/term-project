@@ -7,17 +7,6 @@ type Props = Omit<ImageProps, 'src'> & {
   srcDark: string;
 };
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
-
 export default function Home() {
   return (
     <div className={styles.page}>
@@ -25,6 +14,7 @@ export default function Home() {
         <ol>
           <li>next.js 앱서비스 배포</li>
           <li>API_URL: {process.env.API_URL ?? '(not set)'}</li>
+          <li>BLOB_URL: {process.env.BLOB_URL ?? '(not set)'}</li>
           <li>Save and see your changes instantly.</li>
         </ol>
 
