@@ -7,6 +7,10 @@ on:
       - 'apps/web/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      - 'turbo.json'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
       - '.github/workflows/deploy-fe113.yml'
   workflow_dispatch:
 
