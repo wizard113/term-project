@@ -33,7 +33,7 @@ jobs:
       - name: Build web app
         env:
           API_URL: ${{ secrets.API_URL }}
-          BLOB _URL: ${{ secrets.BLOB_URL}}
+          BLOB_URL: ${{ secrets.BLOB_URL}}
         run: pnpm turbo build --filter=web
 
       - name: Prepare deployment package
