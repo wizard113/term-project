@@ -2,8 +2,7 @@ name: Deploy Next.js (web) to Azure App Service
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - 'apps/web/**'
       - 'packages/**'
@@ -12,26 +11,18 @@ on:
   workflow_dispatch:
 
 env:
-  # ▼ 실제 Azure App Service 이름 / 슬롯으로 변경
   AZURE_WEBAPP_NAME: deploy-fe113
-  AZURE_SLOT_NAME: Production
-  NODE_VERSION: '20.x' # Azure App Service Linux 이 지원하는 버전과 맞출 것
+  NODE_VERSION: '20.x'
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # pnpm 을 먼저 설치해야 setup-node 의 pnpm 캐시가 동작함
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -40,69 +31,29 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build web app
+        env:
+          API_URL: ${{ secrets.API_URL }}
         run: pnpm turbo build --filter=web
 
       - name: Prepare deployment package
         run: |
           set -euo pipefail
-
-          # standalone 산출물 안 server.js 를 동적으로 찾는다.
-          # (모노레포 file-tracing 에 따라 중첩 깊이가 달라질 수 있어 하드코딩하지 않음)
           SERVER=$(find apps/web/.next/standalone -type f -path '*/apps/web/server.js' | head -1)
-          if [ -z "$SERVER" ]; then
-            echo "::error::standalone server.js 없음. apps/web/next.config.js 의 output:'standalone' 확인"
-            exit 1
-          fi
           PREFIX="${SERVER%/apps/web/server.js}"
-          echo "standalone root: $PREFIX"
 
           rm -rf deploy && mkdir deploy
-
-          # 1) 서버 번들 + node_modules 를 deploy/ 루트로 평탄화 복사
-          #    심링크는 그대로 보존한다(-L 로 역참조하면 pnpm store 의
-          #    dangling 심링크에서 cp 가 실패함). 아래 zip -y 로 심링크째 압축.
           cp -R "$PREFIX/." deploy/
-
-          # 2) standalone 은 static/public 을 포함하지 않으므로 수동 배치
           mkdir -p deploy/apps/web/.next/static deploy/apps/web/public
           cp -R apps/web/.next/static/. deploy/apps/web/.next/static/
-          if [ -d apps/web/public ]; then
-            cp -R apps/web/public/. deploy/apps/web/public/
-          fi
-
-          # 3) Azure 시작 진입점 (Startup Command = node server.js)
-          cat > deploy/server.js <<'EOF'
-          require('./apps/web/server.js');
-          EOF
-
-          echo "===== deploy 구조 ====="
-          find deploy -maxdepth 2 -print
-          test -f deploy/apps/web/server.js
+          [ -d apps/web/public ] && cp -R apps/web/public/. deploy/apps/web/public/
+          echo "require('./apps/web/server.js');" > deploy/server.js
 
       - name: Zip package
-        run: |
-          cd deploy
-          zip -qry ../release.zip .   # -y: 심링크를 보존한 채 압축
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: web
-          path: release.zip
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: web
+        run: cd deploy && zip -qry ../release.zip .   # -y: 심링크 보존
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: ${{ env.AZURE_SLOT_NAME }}
           package: release.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F04AAB5CCACF4C2BA080D6B96649E287 }}
