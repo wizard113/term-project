@@ -15,6 +15,10 @@ export default function Home() {
           <li>next.js 앱서비스 배포</li>
           <li>API_URL : {process.env.API_URL ?? '(not set)'}</li>
           <li>BLOB_URL : {process.env.BLOB_URL ?? '(not set)'}</li>
+          <li>
+            NEXT_PUBLIC_BLOB_URL :
+            {process.env.NEXT_PUBLIC_BLOB_URL ?? '(not set)'}
+          </li>
           <li>Save and see your changes instantly.</li>
         </ol>
 
