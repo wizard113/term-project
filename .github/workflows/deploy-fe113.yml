@@ -11,7 +11,7 @@ on:
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
-      - '.github/workflows/deploy-web.yml'
+      - '.github/workflows/deploy-fe113.yml'
 
   workflow_dispatch:
 
