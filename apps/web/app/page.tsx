@@ -18,7 +18,7 @@ export default function Home() {
           <li>BLOB_URL : {process.env.BLOB_URL ?? '(not set)'}</li>
           <li>
             NEXT_PUBLIC_BLOB_URL :
-            {process.env.NEXT_PUBLIC_BLOB_URL ?? '(not set)'}
+            {process.env.NEXT_PUBLIC_BLOB_URL ?? '(설정하시오)'}
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
