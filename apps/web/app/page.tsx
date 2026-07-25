@@ -8,7 +8,7 @@ type Props = Omit<ImageProps, 'src'> & {
 };
 
 export default function Home() {
-  console.log(process.env.NEXT_PUBLIC_BLOB_URL ?? 'B----');
+  console.log(process.env.NEXT_PUBLIC_BLOB_URL1 ?? 'B----');
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -18,7 +18,7 @@ export default function Home() {
           <li>BLOB_URL : {process.env.BLOB_URL ?? '(not set)'}</li>
           <li>
             NEXT_PUBLIC_BLOB_URL :
-            {process.env.NEXT_PUBLIC_BLOB_URL ?? '(설정하시오)'}
+            {process.env.NEXT_PUBLIC_BLOB_URL1 ?? '(설정하시오)'}
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>

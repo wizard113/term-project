@@ -7,7 +7,7 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
-      "env": ["API_URL", "BLOB_URL", "NEXT_PUBLIC_BLOB_URL"]
+      "env": ["API_URL", "BLOB_URL", "NEXT_PUBLIC_BLOB_URL1"]
     },
     "lint": {
       "dependsOn": ["^lint"]
